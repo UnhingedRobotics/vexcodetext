@@ -1,4 +1,4 @@
-# VEXcode mkenv.mk 2022_06_26_01 - Modified to remove SDK folder requirements
+# VEXcode mkenv.mk 2022_06_26_01
 
 # macros to help with paths that include spaces
 sp = $() $()
@@ -8,6 +8,11 @@ sq = $(subst $(sp),?,$1)
 # default platform and build location
 PLATFORM  = vexv5
 BUILD     = build
+
+# version for clang headers
+ifneq ("$(origin HEADERS)", "command line")
+HEADERS = 8.0.0
+endif
 
 # Project name passed from app
 ifeq ("$(origin P)", "command line")
@@ -20,6 +25,12 @@ endif
 ifneq (1,$(words $(PROJECT)))
 $(error Project name cannot contain whitespace: $(PROJECT))
 endif
+
+# SDK path passed from app
+VEX_SDK_PATH = $(CURDIR)/sdk
+# TOOLCHAIN path passed from app
+VEX_TOOLCHAIN_PATH = $(CURDIR)/toolchain
+
 
 # printf_float flag name passed from app (not used in this version)
 ifeq ("$(origin PRINTF_FLOAT)", "command line")
@@ -46,8 +57,8 @@ Q =
 endif
 
 # compile and link tools
-CC      = arm-none-eabi-gcc
-CXX     = arm-none-eabi-g++
+CC      = clang 
+CXX     = clang
 OBJCOPY = arm-none-eabi-objcopy
 SIZE    = arm-none-eabi-size
 LINK    = arm-none-eabi-ld
@@ -71,35 +82,27 @@ RMDIR = rm -rf
 CLEAN = $(RMDIR) $(BUILD) 2> /dev/null || :
 endif
 
-# toolchain include and lib locations (using system-installed ARM GCC toolchain)
-TOOL_INC  = -I"/usr/include" -I"/usr/include/arm-none-eabi" -I"/usr/include/c++/4.9.3"
-TOOL_LIB  = -L"/usr/lib/arm-none-eabi"
+# toolchain include and lib locations
+TOOL_INC  = -I"$(VEX_SDK_PATH)/$(PLATFORM)/clang/$(HEADERS)/include" -I"$(VEX_SDK_PATH)/$(PLATFORM)/gcc/include/c++/4.9.3"  -I"$(VEX_SDK_PATH)/$(PLATFORM)/gcc/include/c++/4.9.3/arm-none-eabi/armv7-ar/thumb" -I"$(VEX_SDK_PATH)/$(PLATFORM)/gcc/include"
+TOOL_LIB  = -L"$(VEX_SDK_PATH)/$(PLATFORM)/gcc/libs"
 
 # compiler flags
-CFLAGS_CL = -mcpu=cortex-m4 -mthumb -fshort-enums -Wno-unknown-attributes -U__INT32_TYPE__ -U__UINT32_TYPE__ -D__INT32_TYPE__=long -D__UINT32_TYPE__='unsigned long'
+CFLAGS_CL = -target thumbv7-none-eabi -fshort-enums -Wno-unknown-attributes -U__INT32_TYPE__ -U__UINT32_TYPE__ -D__INT32_TYPE__=long -D__UINT32_TYPE__='unsigned long' 
 CFLAGS_V7 = -march=armv7-a -mfpu=neon -mfloat-abi=softfp
 CFLAGS    = ${CFLAGS_CL} ${CFLAGS_V7} -Os -Wall -Werror=return-type -ansi -std=gnu99 $(DEFINES)
-CXX_FLAGS = ${CFLAGS_CL} ${CFLAGS_V7} -Os -Wall -Werror=return-type -fno-rtti -fno-threadsafe-statics -fno-exceptions -std=gnu++11 $(DEFINES)
+CXX_FLAGS = ${CFLAGS_CL} ${CFLAGS_V7} -Os -Wall -Werror=return-type -fno-rtti -fno-threadsafe-statics -fno-exceptions  -std=gnu++11 -ffunction-sections -fdata-sections $(DEFINES)
 
 # linker flags
-LNK_FLAGS = -nostdlib -T"/usr/lib/ldscripts/arm.ld" --gc-sections -Map="$(BUILD)/$(PROJECT).map" ${TOOL_LIB}
+LNK_FLAGS = -nostdlib -T "$(VEX_SDK_PATH)/$(PLATFORM)/lscript.ld" -R "$(VEX_SDK_PATH)/$(PLATFORM)/stdlib_0.lib" -Map="$(BUILD)/$(PROJECT).map" --gc-section -L"$(VEX_SDK_PATH)/$(PLATFORM)" ${TOOL_LIB}
 
-# future static library
+# future statuc library
 PROJECTLIB = lib$(PROJECT)
 ARCH_FLAGS = rcs
 
 # libraries
-LIBS = --start-group -lv5rt -lstdc++ -lc -lm -lgcc --end-group
+LIBS =  --start-group -lv5rt -lstdc++ -lc -lm -lgcc --end-group
 
 # include file paths
 INC += $(addprefix -I, ${INC_F})
+INC += -I"$(VEX_SDK_PATH)/$(PLATFORM)/include"
 INC += ${TOOL_INC}
-
-
-# print build info
-info:
-	@echo "Project: $(PROJECT)"
-	@echo "Platform: $(PLATFORM)"
-	@echo "Compiler: $(CC)"
-
-VEXCOM = vexcom
