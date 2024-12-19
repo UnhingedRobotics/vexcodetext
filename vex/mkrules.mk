@@ -15,7 +15,7 @@ $(BUILD)/%.o: %.cpp $(SRC_H) $(SRC_A)
 # create executable
 $(BUILD)/$(PROJECT).elf: $(OBJ)
 	$(ECHO) "LINK $@"
-	$(Q)$(CXX) $(LNK_FLAGS) -o $@ $^ $(LIBS)
+	$(Q)$(LINK) $(LNK_FLAGS) -o $@ $^ $(LIBS)
 
 # create binary
 $(BUILD)/$(PROJECT).bin: $(BUILD)/$(PROJECT).elf
