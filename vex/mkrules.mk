@@ -36,3 +36,6 @@ upload:
 
 test:
 	./vexcom
+build: 
+	$(BUILD)/$(PROJECT).bin
+
