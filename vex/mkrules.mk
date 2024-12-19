@@ -1,9 +1,5 @@
 # VEXcode mkrules.mk 2019_03_26_01
 
-# Define source and object files
-SRC = src/main.cpp src/other_file.cpp  # Add other files as needed
-OBJ = $(SRC:.cpp=.o)
-
 # compile C files
 $(BUILD)/%.o: %.c $(SRC_H)
 	$(Q)mkdir -p $(BUILD)
@@ -12,7 +8,7 @@ $(BUILD)/%.o: %.c $(SRC_H)
 
 # compile C++ files
 $(BUILD)/%.o: %.cpp $(SRC_H) $(SRC_A)
-	$(Q)mkdir -p $(BUILD)
+	$(Q)$(MKDIR)
 	$(ECHO) "CXX $<"
 	$(Q)$(CXX) $(CXX_FLAGS) $(INC) -c -o $@ $<
 
@@ -42,4 +38,4 @@ upload: $(BUILD)/$(PROJECT).bin
 test:
 	./vexcom
 # Default target for build
-build:  clean $(BUILD)/$(PROJECT).bin
+build: clean $(BUILD)/$(PROJECT).bin

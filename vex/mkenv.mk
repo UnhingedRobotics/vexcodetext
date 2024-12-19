@@ -28,6 +28,9 @@ endif
 
 # SDK path passed from app
 VEX_SDK_PATH = $(CURDIR)/sdk
+# TOOLCHAIN path passed from app
+VEX_TOOLCHAIN_PATH = $(CURDIR)/toolchain
+
 
 # printf_float flag name passed from app (not used in this version)
 ifeq ("$(origin PRINTF_FLOAT)", "command line")
@@ -54,12 +57,12 @@ Q =
 endif
 
 # compile and link tools
-CC      = clang
-CXX     = clang
-OBJCOPY = llvm-objcopy
-SIZE    = llvm-size
-LINK    = arm-none-eabi-ld
-ARCH    = arm-none-eabi-ar
+CC      = $(CURDIR)/toolchain/clang/bin/clang 
+CXX     = $(CURDIR)/toolchain/clang/bin/clang
+OBJCOPY = $(CURDIR)/toolchain/gcc/bin/arm-none-eabi-objcopy
+SIZE    = $(CURDIR)/toolchain/gcc/bin/arm-none-eabi-size
+LINK    = $(CURDIR)/toolchain/gcc/bin/arm-none-eabi-ld
+ARCH    = $(CURDIR)/toolchain/gcc/bin/arm-none-eabi-ar
 ECHO    = @echo
 DEFINES = -DVexV5
 
@@ -84,20 +87,20 @@ TOOL_INC  = -I"$(VEX_SDK_PATH)/$(PLATFORM)/clang/$(HEADERS)/include" -I"$(VEX_SD
 TOOL_LIB  = -L"$(VEX_SDK_PATH)/$(PLATFORM)/gcc/libs"
 
 # compiler flags
-CFLAGS_CL = --target=arm-none-eabi -march=armv7-a -mfloat-abi=softfp -mfpu=neon -fshort-enums -Wno-unknown-attributes
+CFLAGS_CL = -target thumbv7-none-eabi -fshort-enums -Wno-unknown-attributes -U__INT32_TYPE__ -U__UINT32_TYPE__ -D__INT32_TYPE__=long -D__UINT32_TYPE__='unsigned long' 
 CFLAGS_V7 = -march=armv7-a -mfpu=neon -mfloat-abi=softfp
 CFLAGS    = ${CFLAGS_CL} ${CFLAGS_V7} -Os -Wall -Werror=return-type -ansi -std=gnu99 $(DEFINES)
 CXX_FLAGS = ${CFLAGS_CL} ${CFLAGS_V7} -Os -Wall -Werror=return-type -fno-rtti -fno-threadsafe-statics -fno-exceptions  -std=gnu++11 -ffunction-sections -fdata-sections $(DEFINES)
 
 # linker flags
-LNK_FLAGS = -nostdlib -T "$(VEX_SDK_PATH)/$(PLATFORM)/lscript.ld" -Wl,--gc-sections -L"$(VEX_SDK_PATH)/$(PLATFORM)" ${TOOL_LIB} 
+LNK_FLAGS = -nostdlib -T "$(VEX_SDK_PATH)/$(PLATFORM)/lscript.ld" -R "$(VEX_SDK_PATH)/$(PLATFORM)/stdlib_0.lib" -Map="$(BUILD)/$(PROJECT).map" --gc-section -L"$(VEX_SDK_PATH)/$(PLATFORM)" ${TOOL_LIB}
 
 # future statuc library
 PROJECTLIB = lib$(PROJECT)
 ARCH_FLAGS = rcs
 
 # libraries
-LIBS = -lv5rt -lstdc++ -lc -lm -lgcc
+LIBS =  --start-group -lv5rt -lstdc++ -lc -lm -lgcc --end-group
 
 # include file paths
 INC += $(addprefix -I, ${INC_F})
