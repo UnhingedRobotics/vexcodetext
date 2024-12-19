@@ -32,7 +32,7 @@ clean:
 	$(Q)$(CLEAN)
 
 upload:
-	./vexcom --write $(PROJECT).bin --slot --name $(PROJECT)
+	./vexcom.exe --write $(PROJECT).bin --slot --name $(PROJECT)
 
 test:
-	./vexcom
+	./vexcom.exe
