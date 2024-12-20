@@ -54,14 +54,18 @@ To build and upload your VEX programs, you need the following tools installed on
 
 ---
 
+## Making your project
+
+1. Make a new folder named src
+2. Put any cpp files you want to run in it (typically main.cpp)
+
 ## Running the project
 
-   - For building run 
-   ```bash
-   make clean build
-   ```
-   - For uploading run
-   ```bash
-   make clean upload
-   ```
-
+- For building run 
+```bash
+make clean build
+```
+- For uploading run
+```bash
+make clean upload
+```
