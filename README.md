@@ -4,6 +4,8 @@ This repository provides a lightweight, text-based environment for programming a
 
 **Note**: This project is **not affiliated with VEX Robotics**. It utilizes files extracted from the official VEX VSCode extension and VEXcode application to enable functionality.  
 
+**Note**: This is the [**Linux Branch**](https://github.com/UnhingedRobotics/vexcodetext/tree/linux) if you use windows please go the [**Main Branch**](https://github.com/UnhingedRobotics/vexcodetext).
+
 ---
 
 ## Features  
@@ -23,13 +25,6 @@ To build and upload your VEX programs, you need the following tools installed on
 - **arm-none-eabi-ar**  
 
 ### Installing Dependencies  
-
-#### **Windows**  
-1. Download and install the **ARM GCC toolchain** from [ARM Developer](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm).  
-   - Make sure to add the installation directory to your system `PATH`.  
-2. Install **clang**:  
-   - Download from [LLVM's website](https://releases.llvm.org/download.html).  
-   - Add the `bin` folder from the installation directory to your `PATH`.  
 
 #### **Linux**  
 1. Install the **ARM GCC toolchain**:  
