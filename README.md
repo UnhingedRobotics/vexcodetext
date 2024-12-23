@@ -2,7 +2,9 @@
 
 This repository provides a lightweight, text-based environment for programming and building VEX robotics projects. It is designed as an alternative to the VEX VSCode Extension, allowing you to upload, build, and manage your VEX projects without the need for a full IDE.  
 
-**Note**: This project is **not affiliated with VEX Robotics**. It utilizes files extracted from the official VEX VSCode extension and VEXcode application to enable functionality.  
+**Note**: This project is **not affiliated with VEX Robotics**. It utilizes files extracted from the official VEX VSCode extension and VEXcode application to enable functionality.
+
+**Note**: Great inspiration was taken from this [**article on Medium**](https://medium.com/@sw_47875/setting-up-command-line-c-tools-for-your-vex-v5-team-283277c8d79c).
 
 **Note**: This is the [**Linux Branch**](https://github.com/UnhingedRobotics/vexcodetext/tree/linux) if you use windows please go the [**Main Branch**](https://github.com/UnhingedRobotics/vexcodetext).
 
