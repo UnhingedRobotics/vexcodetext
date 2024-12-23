@@ -15,7 +15,7 @@ This repository provides a lightweight, text-based environment for programming a
 
 ---
 
-## Dependencies  
+## Dependencies and Initial Necessary Steps for Linux 
 
 To build and upload your VEX programs, you need the following tools installed on your system:  
 - **clang**  
@@ -46,6 +46,59 @@ To build and upload your VEX programs, you need the following tools installed on
      ```bash
      sudo pacman -S clang  
      ```  
+
+
+### **Configuring Serial Connections with udev Rules**
+
+To enable proper communication with the VEX Robotics hardware over a serial connection, you need to configure udev rules. This ensures that the device (e.g., /dev/ttyACM0) has the correct permissions for access.
+
+#### Steps to Configure udev Rules:
+
+1. Create a new udev rules file in the /etc/udev/rules.d/ directory:
+    ```bash
+    sudo nano /etc/udev/rules.d/01-vex-v5.rules
+    ```
+2. Add the following line to the file to set permissions for VEX devices:
+
+    ```bash
+    KERNEL=="ttyACM[0-9]*", MODE="0666", ATTRS{idVendor}=="2888", ATTRS{idProduct}=="0503"
+    ```
+
+   - **Explanation**:
+    - `KERNEL=="ttyACM[0-9]*"`: Matches any device with the name pattern `/dev/ttyACM*`.
+    - `MODE="0666"`: Sets read and write permissions for all users.
+    - `ATTRS{idVendor}=="2888"`: Matches the VEX Robotics Vendor ID.
+    - `ATTRS{idProduct}=="0503"`: Matches the VEX Robotics V5 Controller Product ID.
+
+3. Save and close the file.  
+   - In `nano`, press `Ctrl+O` to save, then `Enter` to confirm, and `Ctrl+X` to exit.
+
+4. Reload the `udev` rules:
+
+    ```bash
+    sudo udevadm control --reload-rules
+    ```
+5. Unplug and reconnect the VEX Robotics device.
+
+6. Verify the device is accessible:
+
+    ```bash
+    ls /dev/ttyACM*
+    ```
+#### Troubleshooting
+
+- If the device is not recognized or permissions are incorrect, double-check the Vendor ID and Product ID using the lsusb command:
+  ``` bash
+  lsusb
+  ```
+
+Look for a line like:
+
+  ``` bash
+  Bus 003 Device 015: ID 2888:0503 VEX Robotics, Inc VEX Robotics V5 Controller
+  ```
+
+- Update the idVendor and idProduct values in the udev rules file if necessary.
 
 ---
 
