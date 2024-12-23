@@ -4,6 +4,8 @@ This repository provides a lightweight, text-based environment for programming a
 
 **Note**: This project is **not affiliated with VEX Robotics**. It utilizes files extracted from the official VEX VSCode extension and VEXcode application to enable functionality.  
 
+**Note**: Great inspiration was taken from this [**article on Medium**](https://medium.com/@sw_47875/setting-up-command-line-c-tools-for-your-vex-v5-team-283277c8d79c).
+
 **Note**: This is the [**Main Branch**](https://github.com/UnhingedRobotics/vexcodetext)  if you use Linux please go the [**Linux Branch**](https://github.com/UnhingedRobotics/vexcodetext/tree/linux).
 
 ---
