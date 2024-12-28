@@ -34,7 +34,7 @@ build_getvexsdk:
 	$(MAKE_GETVEXSDK) all
 
 move_sdk:
-	mv $(CURDIR)/external/getvexsdk/sdk/V5_20240802_15_00_00/vexv5/ $(CURDIR)/sdk
+	mv $(CURDIR)/external/getvexsdk/sdk/V5_20240802_15_00_00/ $(CURDIR)/sdk
 
 # include build rules
 include vex/mkrules.mk
