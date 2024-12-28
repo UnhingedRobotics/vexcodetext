@@ -22,9 +22,14 @@ SRC_A  = makefile
 
 # project header file locations
 INC_F  = include
+# Use the -C flag to invoke make in the 'getvexsdk' directory
+MAKE_GETVEXSDK := $(MAKE) -C $(abspath external/getvexsdk)
+
+build_getvexsdk:
+	$(MAKE_GETVEXSDK) all
 
 # build targets
-all: $(BUILD)/$(PROJECT).bin
+all: $(BUILD)/$(PROJECT).bin build_getvexsdk
 
 # include build rules
 include vex/mkrules.mk
