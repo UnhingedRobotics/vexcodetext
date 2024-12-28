@@ -111,11 +111,15 @@ Look for a line like:
 
 ## Running the project
 
-- For building run 
+- First to download the sdk run
+```bash
+make
+```
+- Then for building run 
 ```bash
 make clean build
 ```
-- For uploading run
+- And for uploading run
 ```bash
 make clean upload
 ```
