@@ -26,21 +26,17 @@
 - Fixed mkrules to use clang for cc and cxx.
 - Folder locations for vex header file and make files.
 
-## [1.3.1] - 2024-12-22
+## [1.3.1] - 2024-12-22 to 2024-1-2
 
 ### Updated
 - Fixed errors inside of mkrules.
 - README to add initial inspiration.
+- Licensing
 
-## [2.0.0] - 2024-12-27
+## [2.0.0] - 2024-1-3
 ### Added
 - Rebased to getvexsdk to comply and get rid off headaches with vex sdk license.
 ### Updated
 - Fixed git submodule with getvexsdk.
 - Gitignore to add files that would complicate licensing.
-- Fixed filepath inside of makefile of sdk due to getvexsdk folder location.
 - Changes to the README for using getvexsdk
-
-
-
-
